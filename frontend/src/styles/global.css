@@ -1,0 +1,11 @@
+:root {
+  --gray: #f2f2f2;
+  --red: #e10600;
+  --white: #ffffff;
+  --black: #000000;
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
