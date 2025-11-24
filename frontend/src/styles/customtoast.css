@@ -1,0 +1,44 @@
+.custom-toast {
+  position: relative;
+  background: white;
+  color: black;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  min-width: 300px;
+  font-weight: bold;
+}
+
+.toast-message {
+  margin-bottom: 8px;
+}
+
+.progress-bar {
+  position: relative;
+  height: 8px;
+  background: #eee;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  position: flex;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #800000;
+  border-radius: 4px;
+  transition: width 0.1s linear;
+}
+
+.toast-car {
+  position: absolute;
+  bottom: 50%;
+  transform: translate(-50%, 50%);
+  width: 24px;
+  height: 24px;
+  transition: left 0.1s linear;
+}
+
+.Toastify__progress-bar {
+  display: none !important;
+}

@@ -1,0 +1,26 @@
+.home-container {
+  background-color: var(--gray);
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.home-main {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  flex-wrap: wrap;
+}
+
+.home-card {
+  background-color: var(--white);
+  color: var(--black);
+  padding: 1.5rem;
+  border-radius: 12px;
+  flex: 1 1 300px;
+  box-shadow: 0 4px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.home-card:hover {
+  transform: translateY(-5px);
+}
