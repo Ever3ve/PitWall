@@ -7,6 +7,9 @@ export class Driver {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ nullable: false, unique: true })
+  externalId: string;
+
   @Column()
   name: string;
 
