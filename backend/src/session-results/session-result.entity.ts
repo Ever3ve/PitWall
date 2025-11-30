@@ -7,10 +7,14 @@ export class SessionResult {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Driver, (d) => d.results)
+  @ManyToOne(() => Driver, (d) => d.results, {
+    onDelete: 'CASCADE',
+  })
   driver: Driver;
 
-  @ManyToOne(() => Session, (s) => s.results)
+  @ManyToOne(() => Session, (s) => s.results, {
+    onDelete: 'CASCADE',
+  })
   session: Session;
 
   @Column()

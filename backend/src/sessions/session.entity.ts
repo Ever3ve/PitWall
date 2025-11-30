@@ -29,7 +29,10 @@ export class Session {
   })
   type: SessionType;
 
-  @ManyToOne(() => GrandPrix, (gp) => gp.sessions)
+  @ManyToOne(() => GrandPrix, (gp) => gp.sessions, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   grandPrix: GrandPrix;
 
   @Column({ type: 'timestamp' })

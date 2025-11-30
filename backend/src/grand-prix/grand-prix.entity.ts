@@ -17,7 +17,10 @@ export class GrandPrix {
   @Column()
   name: string;
 
-  @ManyToOne(() => Track)
+  @ManyToOne(() => Track, {
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  })
   track: Track;
 
   @Column({ type: 'date' })
@@ -26,7 +29,10 @@ export class GrandPrix {
   @Column({ type: 'date' })
   endDate: Date;
 
-  @ManyToOne(() => Season, (s) => s.grandPrix)
+  @ManyToOne(() => Season, (s) => s.grandPrix, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   season: Season;
 
   @OneToMany(() => Session, (s) => s.grandPrix)

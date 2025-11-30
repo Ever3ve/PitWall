@@ -7,10 +7,16 @@ export class Contract {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Driver, (d) => d.contracts)
+  @ManyToOne(() => Driver, (d) => d.contracts, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   driver: Driver;
 
-  @ManyToOne(() => Team, (t) => t.contracts)
+  @ManyToOne(() => Team, (t) => t.contracts, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   team: Team;
 
   @Column({ type: 'date' })
