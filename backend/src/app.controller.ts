@@ -9,4 +9,9 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  /*  @Get('sync/drivers')
+  async syncDrivers() {
+    return this.ergastSync.syncDrivers(2024);
+  } */
 }

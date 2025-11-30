@@ -3,6 +3,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { DriversModule } from './drivers/drivers.module';
+import { ExternalApiModule } from './external-api/external-api.module';
+import { TeamsModule } from './teams/teams.module';
+import { ContractsModule } from './contracts/contracts.module';
+import { SessionModule } from './sessions/sessions.module';
+import { TrackModule } from './tracks/tracks.module';
+import { GrandPrixModule } from './grand-prix/grand-prix.module';
+import { SessionResultModule } from './session-results/session-results.module';
+import { SeasonModule } from './seasons/seasons.module';
 
 @Module({
   imports: [
@@ -25,6 +34,15 @@ import { UsersModule } from './users/users.module';
 
     AuthModule,
     UsersModule,
+    ExternalApiModule,
+    DriversModule,
+    TeamsModule,
+    ContractsModule,
+    SeasonModule,
+    TrackModule,
+    GrandPrixModule,
+    SessionModule,
+    SessionResultModule,
   ],
 })
 export class AppModule {}
