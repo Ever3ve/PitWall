@@ -9,5 +9,6 @@ import { ExternalApiService } from './external-api.service';
   imports: [TypeOrmModule.forFeature([Driver])],
   controllers: [DriversController],
   providers: [DriversService, ExternalApiService],
+  exports: [ExternalApiService],
 })
 export class ExternalApiModule {}
