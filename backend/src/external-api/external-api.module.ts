@@ -1,14 +1,9 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Driver } from '../drivers/driver.entity';
-import { DriversService } from './../drivers/drivers.service';
-import { DriversController } from './../drivers/drivers.controller';
 import { ExternalApiService } from './external-api.service';
+import { SyncService } from './sync.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Driver])],
-  controllers: [DriversController],
-  providers: [DriversService, ExternalApiService],
-  exports: [ExternalApiService],
+  providers: [ExternalApiService, SyncService],
+  exports: [ExternalApiService, SyncService],
 })
 export class ExternalApiModule {}
