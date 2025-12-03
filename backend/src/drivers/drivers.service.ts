@@ -4,6 +4,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ExternalApiService } from 'src/external-api/external-api.service';
 
+export interface ExternalDriver {
+  driverId: string;
+  givenName: string;
+  familyName: string;
+  dateOfBirth: string;
+  nationality: string;
+  permanentNumber: string;
+}
+
 @Injectable()
 export class DriversService {
   constructor(
@@ -13,8 +22,11 @@ export class DriversService {
   ) {}
 
   async syncDrivers() {
-    const data = await this.externalApi.getAll('drivers');
-    const drivers = data.MRData.DriverTable.Drivers;
+    const drivers = await this.externalApi.getAll<ExternalDriver>(
+      '2025/drivers',
+      30,
+      'MRData.DriverTable.Drivers',
+    );
 
     for (const d of drivers) {
       const existing = await this.driverRepo.findOne({

@@ -2,33 +2,34 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Season } from './season.entity';
-import { fetchAllFromErgast } from '../external-api/fetch-all.util';
+import { ExternalApiService } from '../external-api/external-api.service';
 
 @Injectable()
 export class SeasonService {
   constructor(
     @InjectRepository(Season)
     private readonly seasonRepo: Repository<Season>,
+    private readonly externalApi: ExternalApiService,
   ) {}
 
   async syncSeasons() {
-    const allSeasons = await fetchAllFromErgast<{ season: string }>(
-      'https://api.jolpi.ca/ergast/f1/seasons',
+    const seasons = await this.externalApi.getAll<{ season: string }>(
+      'seasons',
       30,
       'MRData.SeasonTable.Seasons',
     );
 
-    let syncedCount = 0;
-
-    for (const s of allSeasons) {
+    for (const s of seasons) {
       const year = Number(s.season);
 
-      let season = await this.seasonRepo.findOne({ where: { year } });
-      if (!season) {
-        season = new Season();
+      const existing = await this.seasonRepo.findOne({
+        where: { year },
+      });
+
+      if (!existing) {
+        const season = new Season();
         season.year = year;
         await this.seasonRepo.save(season);
-        syncedCount++;
       }
     }
 

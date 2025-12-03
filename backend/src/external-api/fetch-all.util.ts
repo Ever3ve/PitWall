@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-export async function fetchAllFromErgast<T>(
-  url: string,
-  limit = 30,
+export async function fetchAll<T>(
+  baseUrl: string,
+  endpoint: string,
+  limit: number,
   dataPath: string,
 ): Promise<T[]> {
   let offset = 0;
@@ -10,12 +11,16 @@ export async function fetchAllFromErgast<T>(
   let allItems: T[] = [];
 
   do {
-    const res = await axios.get(url, { params: { limit, offset } });
+    const res = await axios.get(`${baseUrl}/${endpoint}`, {
+      params: { limit, offset },
+    });
+
     const data = dataPath
       .split('.')
       .reduce((acc, key) => acc[key], res.data) as T[];
+
     total = Number(res.data.MRData.total);
-    allItems = allItems.concat(data);
+    allItems.push(...data);
     offset += limit;
   } while (offset < total);
 
