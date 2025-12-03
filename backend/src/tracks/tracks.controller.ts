@@ -1,12 +1,12 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
 import { TrackService } from './tracks.service';
 
 @Controller('tracks')
 export class TrackController {
   constructor(private readonly service: TrackService) {}
 
-  @Get()
+  @Post()
   getAll() {
-    return this.service.getAll();
+    return this.service.syncTracks();
   }
 }
