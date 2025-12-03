@@ -1,12 +1,12 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Post, Get } from '@nestjs/common';
 import { SeasonService } from './seasons.service';
 
 @Controller('seasons')
 export class SeasonController {
-  constructor(private readonly service: SeasonService) {}
+  constructor(private readonly seasonsService: SeasonService) {}
 
-  @Get()
-  getAll() {
-    return this.service.getAll();
+  @Post('sync')
+  sync() {
+    return this.seasonsService.syncSeasons();
   }
 }

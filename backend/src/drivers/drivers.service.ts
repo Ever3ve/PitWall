@@ -13,36 +13,30 @@ export class DriversService {
   ) {}
 
   async syncDrivers() {
-    const data = await this.externalApi.getDrivers();
+    const data = await this.externalApi.getAll('drivers');
     const drivers = data.MRData.DriverTable.Drivers;
 
     for (const d of drivers) {
-      let driver = await this.driverRepo.findOne({
+      const existing = await this.driverRepo.findOne({
         where: { externalId: d.driverId },
       });
 
-      if (!driver) {
-        driver = new Driver();
-        driver.externalId = d.driverId;
-        driver.name = d.givenName;
-        driver.surname = d.familyName;
-        driver.birthday = new Date(d.dateOfBirth);
-        driver.country = d.nationality;
-        driver.carNumber = Number(d.permanentNumber);
+      const driver = existing ?? new Driver();
+
+      driver.externalId = d.driverId;
+      driver.name = d.givenName;
+      driver.surname = d.familyName;
+      driver.birthday = new Date(d.dateOfBirth);
+      driver.country = d.nationality;
+      driver.carNumber = Number(d.permanentNumber);
+
+      if (!existing) {
         driver.fansCount = 0;
         driver.firstRace = '';
         driver.firstWin = '';
-
-        await this.driverRepo.save(driver);
-      } else {
-        driver.name = d.givenName;
-        driver.surname = d.familyName;
-        driver.birthday = new Date(d.dateOfBirth);
-        driver.country = d.nationality;
-        driver.carNumber = Number(d.permanentNumber);
-
-        await this.driverRepo.save(driver);
       }
+
+      await this.driverRepo.save(driver);
     }
 
     return { message: 'ok' };
