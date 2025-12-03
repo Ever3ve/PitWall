@@ -4,17 +4,6 @@ import { Repository } from 'typeorm';
 import { Track } from './track.entity';
 import { ExternalApiService } from '../external-api/external-api.service';
 
-interface ErgastCircuit {
-  circuitId: string;
-  circuitName: string;
-  Location: {
-    lat: string;
-    long: string;
-    locality: string;
-    country: string;
-  };
-}
-
 @Injectable()
 export class TrackService {
   constructor(
@@ -40,7 +29,6 @@ export class TrackService {
       if (!track) {
         track = new Track();
         track.name = t.circuitName;
-        syncedCount++;
       }
 
       track.name = t.circuitName;
