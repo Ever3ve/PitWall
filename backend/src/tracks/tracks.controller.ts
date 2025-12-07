@@ -5,7 +5,7 @@ import { TrackService } from './tracks.service';
 export class TrackController {
   constructor(private readonly service: TrackService) {}
 
-  @Post()
+  @Post('sync')
   getAll() {
     return this.service.syncTracks();
   }
