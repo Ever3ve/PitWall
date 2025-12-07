@@ -29,6 +29,9 @@ export class GrandPrix {
   @Column({ type: 'date' })
   endDate: Date;
 
+  @Column()
+  round: number;
+
   @ManyToOne(() => Season, (s) => s.grandPrix, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
