@@ -38,9 +38,9 @@ export class DriversService {
       driver.externalId = d.driverId;
       driver.name = d.givenName;
       driver.surname = d.familyName;
-      driver.birthday = new Date(d.dateOfBirth);
+      driver.birthday = d.dateOfBirth ? new Date(d.dateOfBirth) : null;
       driver.country = d.nationality;
-      driver.carNumber = Number(d.permanentNumber);
+      driver.carNumber = d.permanentNumber ? Number(d.permanentNumber) : 0;
 
       if (!existing) {
         driver.fansCount = 0;

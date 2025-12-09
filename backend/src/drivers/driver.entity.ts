@@ -16,16 +16,16 @@ export class Driver {
   @Column()
   surname: string;
 
-  @Column({ type: 'date' })
-  birthday: Date;
+  @Column({ type: 'date', nullable: true })
+  birthday: Date | null;
 
-  @Column()
+  @Column({ nullable: true })
   country: string;
 
   @Column({ default: 0 })
   fansCount: number;
 
-  @Column()
+  @Column({ nullable: true })
   carNumber: number;
 
   @Column({ nullable: true })
