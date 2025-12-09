@@ -19,8 +19,6 @@ export class TrackService {
       'MRData.CircuitTable.Circuits',
     );
 
-    let syncedCount = 0;
-
     for (const t of tracks) {
       let track = await this.trackRepo.findOne({
         where: { name: t.circuitName },
