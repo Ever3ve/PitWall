@@ -1,12 +1,12 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
 import { SessionService } from './sessions.service';
 
 @Controller('sessions')
 export class SessionController {
   constructor(private readonly service: SessionService) {}
 
-  @Get()
-  getAll() {
-    return this.service.getAll();
+  @Post('sync')
+  sync() {
+    return this.service.syncSessions();
   }
 }
