@@ -1,12 +1,12 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
 import { GrandPrixService } from './grand-prix.service';
 
 @Controller('grand-prix')
 export class GrandPrixController {
   constructor(private readonly service: GrandPrixService) {}
 
-  @Get()
+  @Post('sync')
   getAll() {
-    return this.service.getAll();
+    return this.service.syncGrandsPrix();
   }
 }

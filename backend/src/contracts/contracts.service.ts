@@ -26,7 +26,9 @@ export class ContractsService {
     const standingsCache = new Map<number, any>();
 
     for (const year of years) {
-      const res = await this.externalApi.getById(`${year}/driverstandings`, '');
+      const res = await this.externalApi.getByEndpoint(
+        `${year}/driverstandings`,
+      );
       await new Promise((r) => setTimeout(r, 1000));
 
       const standings =

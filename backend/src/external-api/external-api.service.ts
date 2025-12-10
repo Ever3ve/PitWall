@@ -14,8 +14,8 @@ export class ExternalApiService {
     return fetchAll<T>(this.BASE_URL, endpoint, limit, dataPath);
   }
 
-  async getById(endpoint: string, id: string | number) {
-    const res = await axios.get(`${this.BASE_URL}/${endpoint}/${id}`);
+  async getByEndpoint(endpoint: string) {
+    const res = await axios.get(`${this.BASE_URL}/${endpoint}`);
     return res.data;
   }
 }
