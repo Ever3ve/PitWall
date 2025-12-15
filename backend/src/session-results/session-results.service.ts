@@ -18,6 +18,19 @@ export class SessionResultsService {
     private readonly externalApi: ExternalApiService,
   ) {}
 
+  findAll() {
+    return this.repo.find({
+      relations: ['driver', 'session'],
+    });
+  }
+
+  findOne(id: number) {
+    return this.repo.findOne({
+      where: { id },
+      relations: ['driver', 'session'],
+    });
+  }
+
   async syncSessionResults(year: number) {
     const sessions = await this.sessionRepo.find({
       relations: ['grandPrix', 'grandPrix.season'],
