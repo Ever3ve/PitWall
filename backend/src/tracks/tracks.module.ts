@@ -4,9 +4,10 @@ import { Track } from './track.entity';
 import { TrackService } from './tracks.service';
 import { TrackController } from './tracks.controller';
 import { ExternalApiModule } from '../external-api/external-api.module';
+import { GrandPrix } from 'src/grand-prix/grand-prix.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Track]), ExternalApiModule],
+  imports: [TypeOrmModule.forFeature([Track, GrandPrix]), ExternalApiModule],
   controllers: [TrackController],
   providers: [TrackService],
 })

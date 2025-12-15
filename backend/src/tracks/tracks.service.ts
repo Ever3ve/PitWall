@@ -3,14 +3,45 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Track } from './track.entity';
 import { ExternalApiService } from '../external-api/external-api.service';
+import { GrandPrix } from 'src/grand-prix/grand-prix.entity';
 
 @Injectable()
 export class TrackService {
   constructor(
     @InjectRepository(Track)
     private readonly trackRepo: Repository<Track>,
+    @InjectRepository(GrandPrix)
+    private readonly gpRepo: Repository<GrandPrix>,
     private readonly externalApi: ExternalApiService,
   ) {}
+
+  async findAll() {
+    return this.trackRepo.find({
+      order: { name: 'ASC' },
+    });
+  }
+
+  async findOne(id: number) {
+    return this.trackRepo.findOne({
+      where: { id },
+    });
+  }
+
+  async findBySeason(year: number) {
+    const gps = await this.gpRepo.find({
+      relations: ['track', 'season'],
+      where: {
+        season: { year },
+      },
+    });
+
+    const unique = new Map<number, Track>();
+    for (const gp of gps) {
+      unique.set(gp.track.id, gp.track);
+    }
+
+    return [...unique.values()];
+  }
 
   async syncTracks() {
     const tracks = await this.externalApi.getAll<any>(
