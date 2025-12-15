@@ -18,6 +18,26 @@ export class TeamsService {
     private readonly externalApi: ExternalApiService,
   ) {}
 
+  findAll(): Promise<Team[]> {
+    return this.teamsRepo.find();
+  }
+
+  findOne(id: number): Promise<Team | null> {
+    return this.teamsRepo.findOne({ where: { id } });
+  }
+
+  create(data: Partial<Team>): Promise<Team> {
+    const team = this.teamsRepo.create(data);
+    return this.teamsRepo.save(team);
+  }
+
+  async update(id: number, data: Partial<Team>): Promise<Team | null> {
+    const team = await this.teamsRepo.findOne({ where: { id } });
+    if (!team) return null;
+    Object.assign(team, data);
+    return this.teamsRepo.save(team);
+  }
+
   async syncTeams() {
     const teams = await this.externalApi.getAll<ExternalTeam>(
       'constructors',
