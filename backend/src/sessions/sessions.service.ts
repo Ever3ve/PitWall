@@ -27,6 +27,38 @@ export class SessionService {
     private readonly externalApi: ExternalApiService,
   ) {}
 
+  findAll() {
+    return this.sessionRepo.find({
+      relations: ['grandPrix'],
+      order: {
+        startTime: 'ASC',
+      },
+    });
+  }
+
+  findOne(id: number) {
+    return this.sessionRepo.findOne({
+      where: { id },
+      relations: ['grandPrix'],
+    });
+  }
+
+  async findByYear(year: number) {
+    return this.sessionRepo.find({
+      relations: ['grandPrix', 'grandPrix.season'],
+      where: {
+        grandPrix: {
+          season: {
+            year,
+          },
+        },
+      },
+      order: {
+        startTime: 'ASC',
+      },
+    });
+  }
+
   async syncSessions() {
     const seasons = await this.seasonRepo.find();
 
