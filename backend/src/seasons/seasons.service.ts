@@ -12,6 +12,18 @@ export class SeasonService {
     private readonly externalApi: ExternalApiService,
   ) {}
 
+  async findAll() {
+    return this.seasonRepo.find({
+      order: { year: 'DESC' },
+    });
+  }
+
+  async findOne(year: number) {
+    return this.seasonRepo.findOne({
+      where: { year },
+    });
+  }
+
   async syncSeasons() {
     const seasons = await this.externalApi.getAll<{ season: string }>(
       'seasons',
