@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Driver } from './driver.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -20,6 +20,16 @@ export class DriversService {
     private readonly driverRepo: Repository<Driver>,
     private readonly externalApi: ExternalApiService,
   ) {}
+
+  async getAll(): Promise<Driver[]> {
+    return this.driverRepo.find();
+  }
+
+  async getOne(id: number): Promise<Driver> {
+    const driver = await this.driverRepo.findOne({ where: { id } });
+    if (!driver) throw new NotFoundException('Driver not found');
+    return driver;
+  }
 
   async syncDrivers() {
     const drivers = await this.externalApi.getAll<ExternalDriver>(
