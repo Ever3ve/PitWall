@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ContractsService } from './contracts.service';
 import { Roles } from 'src/auth/gurads/roles.decorator';
 import { RolesGuard } from 'src/auth/gurads/roles.guard';
@@ -8,9 +8,34 @@ import { UserRole } from 'src/users/user.entity';
 export class ContractsController {
   constructor(private readonly service: ContractsService) {}
 
+  @Get()
+  findAll() {
+    return this.service.findAll();
+  }
+
+  @Get('active')
+  findActive() {
+    return this.service.findActive();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: number) {
+    return this.service.findOne(id);
+  }
+
+  @Get('driver/:driverId')
+  findByDriver(@Param('driverId') driverId: number) {
+    return this.service.findByDriver(driverId);
+  }
+
+  @Get('team/:teamId')
+  findByTeam(@Param('teamId') teamId: number) {
+    return this.service.findByTeam(teamId);
+  }
+
   @Post('sync')
-  @Roles(UserRole.ADMIN)
-  @UseGuards(RolesGuard)
+  /*   @Roles(UserRole.ADMIN)
+  @UseGuards(RolesGuard) */
   sync() {
     return this.service.syncContracts();
   }

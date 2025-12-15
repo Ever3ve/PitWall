@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { Contract } from './contract.entity';
 import { Driver } from '../drivers/driver.entity';
 import { Team } from '../teams/team.entity';
@@ -17,6 +17,43 @@ export class ContractsService {
     private readonly teamRepo: Repository<Team>,
     private readonly externalApi: ExternalApiService,
   ) {}
+
+  findAll() {
+    return this.contractRepo.find({
+      relations: ['driver', 'team'],
+      order: { started: 'DESC' },
+    });
+  }
+
+  findOne(id: number) {
+    return this.contractRepo.find({
+      where: { id },
+      relations: ['driver', 'team'],
+    });
+  }
+
+  findByDriver(driverId: number) {
+    return this.contractRepo.find({
+      where: { driver: { id: driverId } },
+      relations: ['team'],
+      order: { started: 'DESC' },
+    });
+  }
+
+  findByTeam(teamId: number) {
+    return this.contractRepo.find({
+      where: { team: { id: teamId } },
+      relations: ['driver'],
+      order: { started: 'DESC' },
+    });
+  }
+
+  findActive() {
+    return this.contractRepo.find({
+      where: { ended: IsNull() },
+      relations: ['driver', 'team'],
+    });
+  }
 
   async syncContracts() {
     const drivers = await this.driverRepo.find({ relations: ['contracts'] });
