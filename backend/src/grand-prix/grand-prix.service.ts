@@ -18,6 +18,30 @@ export class GrandPrixService {
     private readonly externalApi: ExternalApiService,
   ) {}
 
+  async findAll() {
+    return this.gpRepo.find({
+      relations: ['season', 'track'],
+      order: { round: 'ASC' },
+    });
+  }
+
+  async findOne(id: number) {
+    return this.gpRepo.findOne({
+      where: { id },
+      relations: ['season', 'track'],
+    });
+  }
+
+  async findByYear(year: number) {
+    return this.gpRepo.find({
+      relations: ['season', 'track'],
+      where: {
+        season: { year },
+      },
+      order: { round: 'ASC' },
+    });
+  }
+
   async syncGrandsPrix() {
     const seasons = await this.seasonRepo.find();
 
