@@ -31,6 +31,18 @@ export class SessionResultsService {
     });
   }
 
+  async findBySession(sessionId: number) {
+    return this.repo.find({
+      where: {
+        session: { id: sessionId },
+      },
+      relations: ['session', 'driver'],
+      order: {
+        position: 'ASC',
+      },
+    });
+  }
+
   async syncSessionResults(year: number) {
     const sessions = await this.sessionRepo.find({
       relations: ['grandPrix', 'grandPrix.season'],

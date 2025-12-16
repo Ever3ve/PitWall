@@ -43,6 +43,16 @@ export class SessionService {
     });
   }
 
+  async findByGrandPrix(grandPrixId: number) {
+    return this.sessionRepo.find({
+      where: {
+        grandPrix: { id: grandPrixId },
+      },
+      relations: ['grandPrix'],
+      order: { startTime: 'ASC' },
+    });
+  }
+
   async findByYear(year: number) {
     return this.sessionRepo.find({
       relations: ['grandPrix', 'grandPrix.season'],

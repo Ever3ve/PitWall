@@ -18,6 +18,11 @@ export class SessionController {
     return this.service.findOne(id);
   }
 
+  @Get('grand-prix/:grandPrixId')
+  async findByGrandPrix(@Param('grandPrixId') grandPrixId: number) {
+    return this.service.findByGrandPrix(grandPrixId);
+  }
+
   @Get('year/:year')
   async findByYear(@Param('year') year: number) {
     return this.service.findByYear(year);

@@ -13,12 +13,12 @@ export class GrandPrixController {
     return this.service.findAll();
   }
 
-  @Get(':year')
+  @Get('year/:year')
   findByYear(@Param('year') year: number) {
     return this.service.findByYear(year);
   }
 
-  @Get(':id')
+  @Get('grandprix/:id')
   findOne(@Param('id') id: number) {
     return this.service.findOne(id);
   }

@@ -4,7 +4,6 @@ import {
   Get,
   Param,
   Post,
-  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -25,6 +24,11 @@ export class SessionResultsController {
   @Get(':id')
   async findOne(@Param('id') id: number) {
     return this.service.findOne(id);
+  }
+
+  @Get('session/:sessionId')
+  async findBySession(@Param('sessionId') sessionId: number) {
+    return this.service.findBySession(sessionId);
   }
 
   @Post('sync')
