@@ -3,6 +3,7 @@ import { Driver } from './driver.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ExternalApiService } from 'src/external-api/external-api.service';
+import { Season } from 'src/seasons/season.entity';
 
 export interface ExternalDriver {
   driverId: string;
@@ -18,6 +19,8 @@ export class DriversService {
   constructor(
     @InjectRepository(Driver)
     private readonly driverRepo: Repository<Driver>,
+    @InjectRepository(Season)
+    private readonly seasonRepo: Repository<Season>,
     private readonly externalApi: ExternalApiService,
   ) {}
 
@@ -32,33 +35,39 @@ export class DriversService {
   }
 
   async syncDrivers() {
-    const drivers = await this.externalApi.getAll<ExternalDriver>(
-      '2025/drivers',
-      30,
-      'MRData.DriverTable.Drivers',
-    );
+    const seasons = await this.seasonRepo.find();
 
-    for (const d of drivers) {
-      const existing = await this.driverRepo.findOne({
-        where: { externalId: d.driverId },
-      });
+    for (const season of seasons) {
+      const drivers = await this.externalApi.requestWithDelay(() =>
+        this.externalApi.getAll<ExternalDriver>(
+          `${season.year}/drivers`,
+          30,
+          'MRData.DriverTable.Drivers',
+        ),
+      );
 
-      const driver = existing ?? new Driver();
+      for (const d of drivers) {
+        let driver = await this.driverRepo.findOne({
+          where: { externalId: d.driverId },
+        });
 
-      driver.externalId = d.driverId;
-      driver.name = d.givenName;
-      driver.surname = d.familyName;
-      driver.birthday = d.dateOfBirth ? new Date(d.dateOfBirth) : null;
-      driver.country = d.nationality;
-      driver.carNumber = d.permanentNumber ? Number(d.permanentNumber) : 0;
+        if (!driver) {
+          driver = this.driverRepo.create({
+            externalId: d.driverId,
+            fansCount: 0,
+            firstRace: '',
+            firstWin: '',
+          });
+        }
 
-      if (!existing) {
-        driver.fansCount = 0;
-        driver.firstRace = '';
-        driver.firstWin = '';
+        driver.name = d.givenName;
+        driver.surname = d.familyName;
+        driver.birthday = d.dateOfBirth ? new Date(d.dateOfBirth) : null;
+        driver.country = d.nationality;
+        driver.carNumber = d.permanentNumber ? Number(d.permanentNumber) : 0;
+
+        await this.driverRepo.save(driver);
       }
-
-      await this.driverRepo.save(driver);
     }
 
     return { message: 'ok' };

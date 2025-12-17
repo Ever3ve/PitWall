@@ -18,4 +18,9 @@ export class ExternalApiService {
     const res = await axios.get(`${this.BASE_URL}/${endpoint}`);
     return res.data;
   }
+
+  async requestWithDelay<T>(callback: () => Promise<T>) {
+    await new Promise((r) => setTimeout(r, 5000));
+    return callback();
+  }
 }
