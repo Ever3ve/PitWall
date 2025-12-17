@@ -1,6 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  ManyToOne,
+} from 'typeorm';
 import { Contract } from '../contracts/contract.entity';
 import { SessionResult } from '../session-results/session-result.entity';
+import { GrandPrix } from '../grand-prix/grand-prix.entity';
 
 @Entity()
 export class Driver {
@@ -28,11 +35,11 @@ export class Driver {
   @Column({ nullable: true })
   carNumber: number;
 
-  @Column({ nullable: true })
-  firstRace: string;
+  @ManyToOne(() => GrandPrix, { nullable: true })
+  firstGrandPrix: GrandPrix | null;
 
-  @Column({ nullable: true })
-  firstWin: string;
+  @ManyToOne(() => GrandPrix, { nullable: true })
+  firstWinGrandPrix: GrandPrix | null;
 
   @OneToMany(() => Contract, (c) => c.driver)
   contracts: Contract[];

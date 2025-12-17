@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ExternalApiService } from 'src/external-api/external-api.service';
 import { Season } from 'src/seasons/season.entity';
+import { SessionType } from 'src/sessions/session.entity';
 
 export interface ExternalDriver {
   driverId: string;
@@ -25,11 +26,16 @@ export class DriversService {
   ) {}
 
   async getAll(): Promise<Driver[]> {
-    return this.driverRepo.find();
+    return this.driverRepo.find({
+      relations: ['firstGrandPrix', 'firstWinGrandPrix'],
+    });
   }
 
   async getOne(id: number): Promise<Driver> {
-    const driver = await this.driverRepo.findOne({ where: { id } });
+    const driver = await this.driverRepo.findOne({
+      where: { id },
+      relations: ['firstGrandPrix', 'firstWinGrandPrix'],
+    });
     if (!driver) throw new NotFoundException('Driver not found');
     return driver;
   }
@@ -55,8 +61,8 @@ export class DriversService {
           driver = this.driverRepo.create({
             externalId: d.driverId,
             fansCount: 0,
-            firstRace: '',
-            firstWin: '',
+            firstGrandPrix: null,
+            firstWinGrandPrix: null,
           });
         }
 
@@ -67,7 +73,47 @@ export class DriversService {
         driver.carNumber = d.permanentNumber ? Number(d.permanentNumber) : 0;
 
         await this.driverRepo.save(driver);
+        await this.updateEmptyFirstGrandPrix();
       }
+    }
+
+    return { message: 'ok' };
+  }
+
+  async updateEmptyFirstGrandPrix() {
+    const drivers = await this.driverRepo.find({
+      relations: ['results', 'results.session', 'results.session.grandPrix'],
+    });
+
+    for (const driver of drivers) {
+      const validResults = driver.results.filter(
+        (r) => r.session?.grandPrix?.startDate,
+      );
+
+      if (!driver.firstGrandPrix) {
+        const firstGP = validResults
+          .map((r) => r.session.grandPrix)
+          .sort(
+            (a, b) =>
+              new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
+          )[0];
+        if (firstGP) driver.firstGrandPrix = firstGP;
+      }
+
+      if (!driver.firstWinGrandPrix) {
+        const firstWinGP = validResults
+          .filter(
+            (r) => r.position === 1 && r.session.type === SessionType.RACE,
+          )
+          .map((r) => r.session.grandPrix)
+          .sort(
+            (a, b) =>
+              new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
+          )[0];
+        if (firstWinGP) driver.firstWinGrandPrix = firstWinGP;
+      }
+
+      await this.driverRepo.save(driver);
     }
 
     return { message: 'ok' };
