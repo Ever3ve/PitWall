@@ -73,7 +73,7 @@ export class SessionService {
     const seasons = await this.seasonRepo.find();
 
     for (const season of seasons) {
-      const res = await this.requestWithDelay(() =>
+      const res = await this.externalApi.requestWithDelay(() =>
         this.externalApi.getByEndpoint(`${season.year}/races`),
       );
 
@@ -167,10 +167,5 @@ export class SessionService {
       });
       await this.sessionRepo.save(session);
     }
-  }
-
-  private async requestWithDelay<T>(callback: () => Promise<T>) {
-    await new Promise((r) => setTimeout(r, 3000));
-    return callback();
   }
 }

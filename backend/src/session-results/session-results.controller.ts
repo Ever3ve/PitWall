@@ -11,6 +11,8 @@ import { SessionResultsService } from './session-results.service';
 import { Roles } from 'src/auth/gurads/roles.decorator';
 import { UserRole } from 'src/users/user.entity';
 import { RolesGuard } from 'src/auth/gurads/roles.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('session-results')
 export class SessionResultsController {
@@ -32,8 +34,9 @@ export class SessionResultsController {
   }
 
   @Post('sync')
+  @ApiBearerAuth('access-token')
   @Roles(UserRole.ADMIN)
-  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async sync(@Query('year') year: string) {
     if (!year) return { error: 'Year query parameter is required' };
     return this.service.syncSessionResults(Number(year));

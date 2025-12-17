@@ -23,10 +23,12 @@ const AuthModal = ({
           username: form.username,
           password: form.password,
         });
-        console.log(res);
+        console.log("LOGIN RESPONSE:", res.data);
         success("Успішний вхід!");
-        setUser(res.data.user);
-        localStorage.setItem("user", JSON.stringify(res.data.user));
+        const user = res.data.user ?? res.data;
+        setUser(user);
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(user));
       } else {
         await register(form);
         success("Акаунт створено!");

@@ -66,7 +66,7 @@ export class SessionResultsService {
           continue;
       }
 
-      const races = await this.requestWithDelay(() =>
+      const races = await this.externalApi.requestWithDelay(() =>
         this.externalApi.getAll(endpoint, 30, 'MRData.RaceTable.Races'),
       );
 
@@ -130,10 +130,5 @@ export class SessionResultsService {
       });
       await this.repo.save(result);
     }
-  }
-
-  private async requestWithDelay<T>(callback: () => Promise<T>) {
-    await new Promise((r) => setTimeout(r, 3000));
-    return callback();
   }
 }

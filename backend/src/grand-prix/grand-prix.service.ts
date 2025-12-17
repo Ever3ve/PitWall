@@ -54,7 +54,7 @@ export class GrandPrixService {
         continue;
       }
 
-      const res = await this.requestWithDelay(() =>
+      const res = await this.externalApi.requestWithDelay(() =>
         this.externalApi.getByEndpoint(`${season.year}/races`),
       );
 
@@ -105,10 +105,5 @@ export class GrandPrixService {
     }
 
     return { message: 'ok' };
-  }
-
-  async requestWithDelay<T>(callback: () => Promise<T>) {
-    await new Promise((r) => setTimeout(r, 2000));
-    return callback();
   }
 }

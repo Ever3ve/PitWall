@@ -3,6 +3,8 @@ import { GrandPrixService } from './grand-prix.service';
 import { Roles } from 'src/auth/gurads/roles.decorator';
 import { UserRole } from 'src/users/user.entity';
 import { RolesGuard } from 'src/auth/gurads/roles.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('grand-prix')
 export class GrandPrixController {
@@ -24,8 +26,9 @@ export class GrandPrixController {
   }
 
   @Post('sync')
+  @ApiBearerAuth('access-token')
   @Roles(UserRole.ADMIN)
-  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   getAll() {
     return this.service.syncGrandsPrix();
   }

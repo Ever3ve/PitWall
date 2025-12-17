@@ -14,6 +14,14 @@ async function bootstrap() {
     .setTitle('PitWall API')
     .setDescription('API documentation for your F1 project')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+      'access-token',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

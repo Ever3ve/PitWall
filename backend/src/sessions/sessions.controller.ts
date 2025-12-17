@@ -3,6 +3,8 @@ import { SessionService } from './sessions.service';
 import { Roles } from 'src/auth/gurads/roles.decorator';
 import { UserRole } from 'src/users/user.entity';
 import { RolesGuard } from 'src/auth/gurads/roles.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('sessions')
 export class SessionController {
@@ -29,8 +31,9 @@ export class SessionController {
   }
 
   @Post('sync')
+  @ApiBearerAuth('access-token')
   @Roles(UserRole.ADMIN)
-  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   sync() {
     return this.service.syncSessions();
   }
