@@ -3,12 +3,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Season } from './season.entity';
 import { ExternalApiService } from '../external-api/external-api.service';
+import { GrandPrix } from 'src/grand-prix/grand-prix.entity';
 
 @Injectable()
 export class SeasonService {
   constructor(
     @InjectRepository(Season)
     private readonly seasonRepo: Repository<Season>,
+    @InjectRepository(GrandPrix)
+    private readonly gpRepo: Repository<GrandPrix>,
     private readonly externalApi: ExternalApiService,
   ) {}
 
@@ -18,9 +21,24 @@ export class SeasonService {
     });
   }
 
-  async findOne(year: number) {
+  async findOne(id: number) {
     return this.seasonRepo.findOne({
-      where: { year },
+      where: { id },
+    });
+  }
+
+  async getCalendar(seasonId: number) {
+    return this.gpRepo.find({
+      where: {
+        season: { id: seasonId },
+      },
+      relations: ['track', 'sessions'],
+      order: {
+        startDate: 'ASC',
+        sessions: {
+          startTime: 'ASC',
+        },
+      },
     });
   }
 

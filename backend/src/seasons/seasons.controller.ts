@@ -13,9 +13,14 @@ export class SeasonController {
     return this.seasonsService.findAll();
   }
 
-  @Get(':year')
-  findOne(@Param('year') year: number) {
-    return this.seasonsService.findOne(year);
+  @Get(':id')
+  findOne(@Param('id') id: number) {
+    return this.seasonsService.findOne(id);
+  }
+
+  @Get('calendar/:seasonId')
+  getCalendar(@Param('seasonId') seasonId: number) {
+    return this.seasonsService.getCalendar(seasonId);
   }
 
   @Post('sync')
