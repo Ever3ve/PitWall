@@ -3,6 +3,8 @@ import { TrackService } from './tracks.service';
 import { Roles } from 'src/auth/gurads/roles.decorator';
 import { UserRole } from 'src/users/user.entity';
 import { RolesGuard } from 'src/auth/gurads/roles.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('tracks')
 export class TrackController {
@@ -24,8 +26,9 @@ export class TrackController {
   }
 
   @Post('sync')
+  @ApiBearerAuth('access-token')
   @Roles(UserRole.ADMIN)
-  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   getAll() {
     return this.service.syncTracks();
   }

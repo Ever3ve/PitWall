@@ -1,8 +1,12 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API_URL = 'http://localhost:3001/auth';
+const API_URL = "http://localhost:3001/auth";
 
-export const register = async (data: { username: string; email: string; password: string }) => {
+export const register = async (data: {
+  username: string;
+  email: string;
+  password: string;
+}) => {
   return axios.post(`${API_URL}/register`, data);
 };
 
