@@ -12,6 +12,7 @@ import { TrackModule } from './tracks/tracks.module';
 import { GrandPrixModule } from './grand-prix/grand-prix.module';
 import { SessionResultModule } from './session-results/session-results.module';
 import { SeasonModule } from './seasons/seasons.module';
+import { FavoriteDriversModule } from './favorite-drivers/favorite-drivers.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { SeasonModule } from './seasons/seasons.module';
     GrandPrixModule,
     SessionModule,
     SessionResultModule,
+    FavoriteDriversModule,
   ],
 })
 export class AppModule {}

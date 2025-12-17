@@ -3,6 +3,8 @@ import { ContractsService } from './contracts.service';
 import { Roles } from 'src/auth/gurads/roles.decorator';
 import { RolesGuard } from 'src/auth/gurads/roles.guard';
 import { UserRole } from 'src/users/user.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('contracts')
 export class ContractsController {
@@ -34,8 +36,9 @@ export class ContractsController {
   }
 
   @Post('sync')
-  /*   @Roles(UserRole.ADMIN)
-  @UseGuards(RolesGuard) */
+  @ApiBearerAuth('access-token')
+  @Roles(UserRole.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   sync() {
     return this.service.syncContracts();
   }
