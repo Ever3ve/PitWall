@@ -1,17 +1,49 @@
-.navbar {
-  width: 100%;
+.sidebar {
+  width: 250px;
+  height: 100vh;
   background-color: #c80000;
-  padding: 1rem 2rem;
+  padding: 2rem 1rem;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  flex-direction: column;
+  align-items: flex-start;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.2);
+  position: fixed;
 }
 
 .logo {
   color: white;
   font-size: 1.8rem;
   font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.auth-section .dropdown {
+  position: absolute;
+  top: 100px;
+  left: 70px;
+  background: white;
+  border-radius: 8px;
+  padding: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: black;
+  z-index: 100;
+}
+
+.auth-section .dropdown button {
+  background: none;
+  color: black;
+  display: block;
+  width: 100%;
+  border: none;
+  padding: 0.7rem 1rem;
+  text-align: left;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.auth-section .dropdown button:hover {
+  background: #eee;
+  border-radius: 6px;
 }
 
 .user-icon {
@@ -24,25 +56,49 @@
 
 .dropdown {
   position: absolute;
-  top: 70px;
-  right: 20px;
+  top: 100px;
+  left: 20px;
   background: white;
   border-radius: 8px;
   padding: 0.5rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: black;
 }
 
-.dropdown button {
-  display: block;
+.menu-items {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  border: none;
-  background: none;
-  padding: 0.5rem 1rem;
-  text-align: left;
-  cursor: pointer;
-  font-size: 1rem;
 }
 
-.dropdown button:hover {
-  background: #eee;
+.menu-items button {
+  background: none;
+  border: none;
+  color: white;
+  padding: 0.8rem 1rem;
+  text-align: left;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.menu-items button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.menu-items button:active {
+  transform: scale(0.98);
+}
+
+.menu-items button:last-child {
+  margin-top: auto;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.menu-items button:last-child:hover {
+  background-color: rgba(0, 0, 0, 0.3);
 }

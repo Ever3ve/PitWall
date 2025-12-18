@@ -1,0 +1,10 @@
+.calendar-page {
+  padding: 1rem;
+}
+
+.gp-card {
+  border: 1px solid #ccc;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+}
