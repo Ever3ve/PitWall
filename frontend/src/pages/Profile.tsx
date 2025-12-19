@@ -1,27 +1,37 @@
 import { useEffect, useState } from "react";
-import { getCurrentUser } from "../api/user";
+import { getCurrentUser } from "../api/user"; // твій axios fetch
 
 export const Profile = () => {
-  const [user, setUser] = useState<any>(null);
+  const [favorites, setFavorites] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchUser() {
-      const res = await getCurrentUser();
-      setUser(res);
-    }
-    fetchUser();
+    const fetchData = async () => {
+      try {
+        const res = await getCurrentUser();
+        setFavorites(res);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  if (!user) return <div>Loading...</div>;
+  if (loading) return <p>Завантаження...</p>;
+  if (!favorites.length) return <p>Немає даних</p>;
 
   return (
-    <div className="profile-page">
-      <h1>{user.username}'s Profile</h1>
-      <h2>Favorite Drivers:</h2>
+    <div>
+      <h1>Профіль</h1>
+      <h2>Любімки:</h2>
       <ul>
-        {user.favoriteDrivers?.map((driver: any) => (
-          <li key={driver.id}>
-            {driver.name} {driver.surname}
+        {favorites.map((item) => (
+          <li key={item.id}>
+            {item.driver.name} {item.driver.surname} — #{item.driver.carNumber}{" "}
+            ({item.driver.country})
           </li>
         ))}
       </ul>
