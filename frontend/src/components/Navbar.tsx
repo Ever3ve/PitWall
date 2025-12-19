@@ -18,7 +18,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
-    localStorage.removeItem("DanielRicciardoSupremacy");
+    localStorage.removeItem("token");
     localStorage.removeItem("user");
     setUser(null);
   };

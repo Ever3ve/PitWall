@@ -27,7 +27,7 @@ const AuthModal = ({
         success("Успішний вхід!");
         const user = res.data.user ?? res.data;
         setUser(user);
-        localStorage.setItem("DanielRicciardoSupremacy", res.data.token);
+        localStorage.setItem("token", res.data.token);
         localStorage.setItem("user", JSON.stringify(user));
       } else {
         await register(form);
